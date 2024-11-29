@@ -19,6 +19,7 @@ namespace Pizza
         private OrderViewModer _orderViewModel;
 
         private ICustomerRepository _customerRepository = new CustomerRepository();
+        private IOrderRepository _orderRepository = new OrderRepository();
 
         public MainWindowViewModel()
         {
@@ -31,7 +32,9 @@ namespace Pizza
             _customerListViewModel.AddCustomerRequested +=NavigationToAddCustomer;
             _customerListViewModel.EditCustomerRequested += NavigationToEditCustomer;
             _customerListViewModel.PlaceOrderRequested += NavigateToOrder;
-           
+            _customerListViewModel.PlaceOrderRequested += NavigateToOrder;
+            _customerListViewModel.CheckOrdersCustomerRequest += NavigationToOrdersCustomer;
+            _orderViewModel = new OrderViewModer(_orderRepository);
         }
         private BindableBase _currentViewModel;
         public BindableBase CurrentViewModel
@@ -81,6 +84,13 @@ namespace Pizza
         private void NavigateToOrder(Customer customer)
         {
             _orderViewModel.Id = customer.Id;
+            CurrentViewModel = _orderViewModel;
+        }
+
+        //отображение заказов клиента
+        private void NavigationToOrdersCustomer(Customer customer)
+        {
+            _orderViewModel.LoadOrdersCustomer(customer);
             CurrentViewModel = _orderViewModel;
         }
     }

@@ -23,6 +23,7 @@ namespace Pizza.ViewModels
              AddCustomerCommand = new RelayCommand(OnAddCustomer);
              EditCustomerCommand = new RelayCommand<Customer>(OnEditCustomer);
              ClearSearchInput = new RelayCommand(OnClearSearch);
+             CheckOrdersCustomerCommand = new RelayCommand<Customer>(CheckOrderCustomerCommand);
          }
     
          private ObservableCollection<Customer>? _customers;
@@ -92,6 +93,13 @@ namespace Pizza.ViewModels
          private void OnClearSearch()
          {
              SearchInput = null;
+         }
+         public RelayCommand<Customer> CheckOrdersCustomerCommand { get; private set; }
+         public event Action<Customer> CheckOrdersCustomerRequest = delegate { };
+
+         public void CheckOrderCustomerCommand(Customer customer)
+         {
+             CheckOrdersCustomerRequest(customer);
          }
     }
 }
